@@ -1,5 +1,6 @@
 "use client";
 
+import { authenticate } from "@/actions/authenticate";
 import { Button } from "@/components/ui/button";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -9,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 
 export default function Auth() {
   const form = useForm<LoginValues>({
@@ -26,7 +26,14 @@ export default function Auth() {
   const router = useRouter();
 
   const onSubmit = async (data: LoginValues) => {
-    console.log(data);
+    setIsAuthenticating(true);
+    try {
+      await authenticate(data.email, data.password);
+      router.push("/admin");
+    } catch (error) {
+    } finally {
+      setIsAuthenticating(false);
+    }
   };
 
   return (
@@ -73,7 +80,12 @@ export default function Auth() {
             />
           </FieldGroup>
 
-          <Button variant="outline" disabled={isAuthenticating} type="submit">
+          <Button
+            variant="outline"
+            disabled={isAuthenticating}
+            type="submit"
+            className="bg-black text-white"
+          >
             Login
           </Button>
         </form>
