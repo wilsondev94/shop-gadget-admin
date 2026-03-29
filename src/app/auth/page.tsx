@@ -29,7 +29,6 @@ export default function Auth() {
     setIsAuthenticating(true);
     try {
       await authenticate(data.email, data.password);
-      router.push("/admin");
     } catch (error) {
     } finally {
       setIsAuthenticating(false);
