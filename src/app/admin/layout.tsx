@@ -3,7 +3,7 @@ import { Role } from "@/types";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export default async function AuthLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -28,7 +28,7 @@ export default async function AuthLayout({
 
     console.log("USER DATA", data);
 
-    if (data.type === Role.ADMIN) return redirect("/admin");
+    if (data.type === Role.ADMIN) return redirect("/");
   }
 
   return <>{children}</>;
