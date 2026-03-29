@@ -1,107 +1,82 @@
 "use client";
 
-import { authenticate } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import ErrorMessage from "@/components/ui/ErrorMessage";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { LoginValues, validation } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
-});
-
 export default function Auth() {
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<LoginValues>({
+    resolver: zodResolver(validation.login),
     defaultValues: {
       email: "",
       password: "",
     },
+    mode: "onChange",
   });
 
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const router = useRouter();
 
-  const onSubmit = async ({ email, password }: z.infer<typeof loginSchema>) => {
-    setIsAuthenticating(true);
-
-    try {
-      await authenticate(email, password);
-      router.push("/admin");
-    } catch (error) {
-    } finally {
-      setIsAuthenticating(false);
-    }
+  const onSubmit = async (data: LoginValues) => {
+    console.log(data);
   };
 
   return (
     <div className="flex h-svh items-center justify-center">
       <div className="mx-auto grid w-[350px] gap-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-            <FormField
-              control={form.control}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+          <FieldGroup>
+            <Controller
               name="email"
-              render={({ field }) => (
-                <FormItem className="grid gap-2">
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      {...field}
-                      disabled={isAuthenticating}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
               control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="grid gap-2">
-                  <div className="flex items-center">
-                    <FormLabel htmlFor="password">Password</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Input
-                      disabled={isAuthenticating}
-                      id="password"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>{" "}
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <Input
+                    {...field}
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="off"
+                  />
+                  <ErrorMessage fieldState={fieldState} />
+                </Field>
               )}
             />
-            <Button
-              disabled={isAuthenticating}
-              type="submit"
-              className="w-full"
-            >
-              Login
-            </Button>
-          </form>
-        </Form>
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <Input
+                    {...field}
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="off"
+                  />
+
+                  <ErrorMessage fieldState={fieldState} />
+                </Field>
+              )}
+            />
+          </FieldGroup>
+
+          <Button variant="outline" disabled={isAuthenticating} type="submit">
+            Login
+          </Button>
+        </form>
       </div>
     </div>
   );

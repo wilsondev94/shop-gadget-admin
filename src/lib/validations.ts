@@ -1,0 +1,31 @@
+import z from "zod";
+
+const requiredString = z.string().trim().min(1, "Required");
+const passwordSchema = z
+  .string()
+  .regex(/^.{8,}$/, "At Least 8 Characters")
+  .regex(/[a-z]/g, "Lowercase Letter (a-z)")
+  .regex(/[A-Z]/g, "Uppercase Letter (A-Z)")
+  .regex(/[0-9]/g, "Numbers (0-9)")
+  .regex(
+    /^(?=.*[~`!@#$%^&*()--+={}[\]|\\:;"'<>,.?/_₹]).*$/,
+    "Special Character (#,*)",
+  );
+
+export const validation = {
+  // Auth
+  signUp: z.object({
+    firstName: requiredString,
+    lastName: requiredString,
+    email: requiredString.email("Invalid email"),
+    password: passwordSchema,
+    referralCode: z.string().optional(),
+  }),
+  login: z.object({
+    email: requiredString.email("Invalid email"),
+    password: requiredString,
+  }),
+};
+
+export type CreateAccountValues = z.infer<typeof validation.signUp>;
+export type LoginValues = z.infer<typeof validation.login>;
