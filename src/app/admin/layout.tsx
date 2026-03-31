@@ -12,8 +12,6 @@ export default async function AdminLayout({
 
   const { data: authData } = await supabase.auth.getUser();
 
-  console.log("AUTH USER", authData);
-
   if (authData?.user) {
     const { data, error } = await supabase
       .from("users")
@@ -28,7 +26,7 @@ export default async function AdminLayout({
 
     console.log("USER DATA", data);
 
-    if (data.type === Role.ADMIN) return redirect("/");
+    // if (data.type === Role.ADMIN) return redirect("/");
   }
 
   return <>{children}</>;

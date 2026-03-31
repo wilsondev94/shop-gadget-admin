@@ -12,8 +12,6 @@ export default async function AuthLayout({
 
   const { data: authData } = await supabase.auth.getUser();
 
-  console.log("AUTH USER", authData);
-
   if (authData?.user) {
     const { data, error } = await supabase
       .from("users")
@@ -25,8 +23,6 @@ export default async function AuthLayout({
       console.log("Error fetching user data", error);
       return;
     }
-
-    console.log("USER DATA", data);
 
     if (data.type === Role.ADMIN) return redirect("/admin");
   }
