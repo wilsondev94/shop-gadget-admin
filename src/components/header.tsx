@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 const NAV_LINKS = [
   { href: "/admin/dashboard", label: "Dashboard" },
@@ -26,6 +27,7 @@ const NAV_LINKS = [
 
 export const Header = () => {
   const pathname = usePathname();
+  const { setTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -115,21 +117,21 @@ export const Header = () => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
                     onClick={() => {
-                      /* Set light theme */
+                      setTheme("light");
                     }}
                   >
                     Light
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
-                      /* Set light theme */
+                      setTheme("dark");
                     }}
                   >
                     Dark
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
-                      /* Set light theme */
+                      setTheme("system");
                     }}
                   >
                     System
