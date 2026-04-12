@@ -1,6 +1,15 @@
 "use client";
 
-import { CircleUser, Menu, Package2, Search, Sun } from "lucide-react";
+import {
+  CircleUser,
+  LogOut,
+  Menu,
+  Monitor,
+  Moon,
+  Package2,
+  Search,
+  Sun,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -42,7 +51,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
@@ -111,30 +120,25 @@ export const Header = () => {
               <CircleUser className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="bg-red-500 p-4 z-[9999]">
+          <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-
-            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-
-            {/* Use DropdownMenuSub instead of nested DropdownMenu */}
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="h-4 w-4" /> Logout
+            </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <div className="flex items-center gap-2">
-                  <Sun className="h-4 w-4" />
-                  Theme
-                </div>
+                <Sun className="h-4 w-4" /> Theme
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
                 <DropdownMenuItem onClick={() => setTheme("light")}>
-                  Light
+                  <Sun className="h-4 w-4" /> Light
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  Dark
+                  <Moon className="h-4 w-4" /> Dark
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("system")}>
-                  System
+                  <Monitor className="h-4 w-4" /> System
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>

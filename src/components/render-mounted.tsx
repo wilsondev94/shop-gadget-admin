@@ -8,7 +8,14 @@ export const RenderMounted = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return null;
+  // if (!mounted) return null;
 
-  return <>{children}</>;
+  return (
+    <div
+      suppressHydrationWarning
+      style={{ visibility: mounted ? "visible" : "hidden" }}
+    >
+      {children}
+    </div>
+  );
 };
