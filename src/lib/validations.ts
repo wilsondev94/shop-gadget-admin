@@ -25,7 +25,17 @@ export const validation = {
     email: requiredString.email("Invalid email"),
     password: requiredString,
   }),
+
+  createCategorySchema: z.object({
+    image: z.any().refine((file) => file.length === 1, "Image is required"),
+    name: z
+      .string()
+      .min(2, { message: "Name must be at least 2 characters long" }),
+  }),
 };
 
 export type CreateAccountValues = z.infer<typeof validation.signUp>;
 export type LoginValues = z.infer<typeof validation.login>;
+export type CreateCategoryValues = z.infer<
+  typeof validation.createCategorySchema
+>;
