@@ -52,7 +52,6 @@ export const CategoryForm = ({
               <Input
                 type="file"
                 accept="image/*"
-                {...form.register("image")}
                 onChange={(event) => {
                   field.onChange(event.target.files?.[0]);
                 }}

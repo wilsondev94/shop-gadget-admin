@@ -36,6 +36,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CategoriesWithProductsResponse } from "@/types";
 import { CategoryForm } from "./CategoryForm";
+import { v4 as uuid } from "uuid";
+import { createCategory, imageUploadHandler } from "@/actions/categories";
 
 type categoriesProps = {
   categories: CategoriesWithProductsResponse;
@@ -54,12 +56,30 @@ const Categories = ({ categories }: categoriesProps) => {
       name: "",
       image: undefined,
     },
+    mode: "onChange",
   });
 
   const submitCategoryHandler: SubmitHandler<CreateCategoryValues> = async (
     data,
   ) => {
     const { image, name } = data;
+
+    const uniqueId = uuid();
+
+    const fileName = `category/category-${uniqueId}`;
+    const file = new File([image[0]], fileName);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const imageUrl = await imageUploadHandler(formData);
+
+    if (imageUrl) {
+      await createCategory({ imageUrl, name });
+      form.reset();
+      router.refresh();
+      setIsCreateCategoryModalOpen(false);
+      toast.success("Category created successfully");
+    }
   };
 
   return (

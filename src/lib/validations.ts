@@ -27,7 +27,7 @@ export const validation = {
   }),
 
   createCategorySchema: z.object({
-    image: z.any().refine((file) => file.length === 1, "Image is required"),
+    image: z.any().refine((file) => file instanceof File, "Image is required"),
     name: z
       .string()
       .min(2, { message: "Name must be at least 2 characters long" }),
