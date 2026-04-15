@@ -31,6 +31,19 @@ export const CategoryForm = ({
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
       <FieldGroup>
         <Controller
+          name="name"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <Input disabled={isSubmitting} placeholder="Name" {...field} />
+
+              <ErrorMessage fieldState={fieldState} />
+            </Field>
+          )}
+        />
+
+        <Controller
           name="image"
           control={form.control}
           render={({ field, fieldState }) => (
@@ -45,18 +58,6 @@ export const CategoryForm = ({
                 }}
                 disabled={isSubmitting}
               />
-              <ErrorMessage fieldState={fieldState} />
-            </Field>
-          )}
-        />
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="name">Name</FieldLabel>
-              <Input disabled={isSubmitting} placeholder="Name" {...field} />
-
               <ErrorMessage fieldState={fieldState} />
             </Field>
           )}

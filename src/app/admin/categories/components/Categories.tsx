@@ -75,7 +75,7 @@ const Categories = ({ categories }: categoriesProps) => {
             <DialogTrigger asChild>
               <Button
                 size="sm"
-                className="h-8 gap-1"
+                className="h-8 gap-1 rounded-md"
                 onClick={() => {
                   setCurrentCategory(null);
                   setIsCreateCategoryModalOpen(true);
