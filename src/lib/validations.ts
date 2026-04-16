@@ -31,6 +31,23 @@ export const validation = {
     name: z
       .string()
       .min(2, { message: "Name must be at least 2 characters long" }),
+    intent: z
+      .enum(["create", "update"], {
+        message: "Intent must be either create or update",
+      })
+      .optional(),
+    slug: z.string().optional(),
+  }),
+
+  updateCategorySchema: z.object({
+    imageUrl: z.string().min(1, { message: "Image is required" }),
+    name: z
+      .string()
+      .min(2, { message: "Name must be at least 2 characters long" }),
+    intent: z.enum(["create", "update"], {
+      message: "Intent must be either create or update",
+    }),
+    slug: z.string().min(1, { message: "Slug is required" }),
   }),
 };
 
@@ -38,4 +55,7 @@ export type CreateAccountValues = z.infer<typeof validation.signUp>;
 export type LoginValues = z.infer<typeof validation.login>;
 export type CreateCategoryValues = z.infer<
   typeof validation.createCategorySchema
+>;
+export type UpdateCategoryValues = z.infer<
+  typeof validation.updateCategorySchema
 >;

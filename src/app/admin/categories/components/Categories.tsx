@@ -37,7 +37,11 @@ import { toast } from "sonner";
 import { CategoriesWithProductsResponse } from "@/types";
 import { CategoryForm } from "./CategoryForm";
 import { v4 as uuid } from "uuid";
-import { createCategory, imageUploadHandler } from "@/actions/categories";
+import {
+  createCategory,
+  imageUploadHandler,
+  updateCategory,
+} from "@/actions/categories";
 
 type categoriesProps = {
   categories: CategoriesWithProductsResponse;
@@ -62,23 +66,53 @@ const Categories = ({ categories }: categoriesProps) => {
   const submitCategoryHandler: SubmitHandler<CreateCategoryValues> = async (
     data,
   ) => {
-    const { image, name } = data;
+    const { image, name, intent = "create" } = data;
 
-    const uniqueId = uuid();
+    const handleImageUpload = async () => {
+      const uniqueId = uuid();
 
-    const fileName = `category/category-${uniqueId}`;
-    const file = new File([image[0]], fileName);
-    const formData = new FormData();
-    formData.append("file", file);
+      const fileName = `category/category-${uniqueId}`;
+      const file = new File([data.image[0]], fileName);
+      const formData = new FormData();
+      formData.append("file", file);
 
-    const imageUrl = await imageUploadHandler(formData);
+      return imageUploadHandler(formData);
+    };
 
-    if (imageUrl) {
-      await createCategory({ imageUrl, name });
-      form.reset();
-      router.refresh();
-      setIsCreateCategoryModalOpen(false);
-      toast.success("Category created successfully");
+    switch (intent) {
+      case "create": {
+        const imageUrl = await handleImageUpload();
+        if (imageUrl) {
+          await createCategory({ imageUrl, name });
+          form.reset();
+          router.refresh();
+          setIsCreateCategoryModalOpen(false);
+          toast.success("Category created successfully");
+        }
+        break;
+      }
+
+      case "update": {
+        if (image && currentCategory?.slug) {
+          const imageUrl = await handleImageUpload();
+
+          if (imageUrl) {
+            await updateCategory({
+              imageUrl,
+              name,
+              slug: currentCategory.slug,
+              intent: "update",
+            });
+            form.reset();
+            router.refresh();
+            setIsCreateCategoryModalOpen(false);
+            toast.success("Category updated successfully");
+          }
+        }
+      }
+
+      default:
+        console.error("Invalid intent");
     }
   };
 
@@ -143,7 +177,12 @@ const Categories = ({ categories }: categoriesProps) => {
             </TableHeader>
             <TableBody>
               {categories.map((category) => (
-                <CategoryTableRow key={category.id} category={category} />
+                <CategoryTableRow
+                  key={category.id}
+                  category={category}
+                  setCurrentCategory={setCurrentCategory}
+                  setIsCreateCategoryModalOpen={setIsCreateCategoryModalOpen}
+                />
               ))}
             </TableBody>
           </Table>

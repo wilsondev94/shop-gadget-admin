@@ -1,5 +1,6 @@
 "use server";
 
+import { UpdateCategoryValues } from "@/lib/validations";
 import { createClient } from "@/supabase/server";
 import { CategoriesWithProductsResponse } from "@/types";
 import slugify from "slugify";
@@ -71,6 +72,23 @@ export const createCategory = async ({
   });
 
   if (error) throw new Error(`Error creating category: ${error.message}`);
+
+  return data;
+};
+
+export const updateCategory = async ({
+  imageUrl,
+  name,
+  slug,
+}: UpdateCategoryValues) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("category")
+    // @ts-ignore
+    .update({ name, imageUrl })
+    .match({ slug });
+
+  if (error) throw new Error(`Error updating category: ${error.message}`);
 
   return data;
 };
