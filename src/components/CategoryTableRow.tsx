@@ -29,10 +29,12 @@ export const CategoryTableRow = ({
   category,
   setCurrentCategory,
   setIsCreateCategoryModalOpen,
+  deleteCategoryHandler,
 }: {
   category: CategoryWithProducts;
   setCurrentCategory: (category: CreateCategoryValues | null) => void;
   setIsCreateCategoryModalOpen: (isOpen: boolean) => void;
+  deleteCategoryHandler: (id: number) => Promise<void>;
 }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -45,6 +47,11 @@ export const CategoryTableRow = ({
       slug: category.slug,
     });
     setIsCreateCategoryModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    await deleteCategoryHandler(category.id);
+    setIsDeleteDialogOpen(false);
   };
 
   return (
@@ -153,7 +160,9 @@ export const CategoryTableRow = ({
             >
               Cancel
             </Button>
-            <Button variant="destructive">Confirm Delete</Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Confirm Delete
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

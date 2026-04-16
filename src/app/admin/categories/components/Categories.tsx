@@ -39,6 +39,7 @@ import { CategoryForm } from "./CategoryForm";
 import { v4 as uuid } from "uuid";
 import {
   createCategory,
+  deleteCategory,
   imageUploadHandler,
   updateCategory,
 } from "@/actions/categories";
@@ -116,6 +117,12 @@ const Categories = ({ categories }: categoriesProps) => {
     }
   };
 
+  const deleteCategoryHandler = async (id: number) => {
+    await deleteCategory(id);
+    router.refresh();
+    toast.success("Category deleted successfully");
+  };
+
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <div className="flex items-center my-10">
@@ -182,6 +189,7 @@ const Categories = ({ categories }: categoriesProps) => {
                   category={category}
                   setCurrentCategory={setCurrentCategory}
                   setIsCreateCategoryModalOpen={setIsCreateCategoryModalOpen}
+                  deleteCategoryHandler={deleteCategoryHandler}
                 />
               ))}
             </TableBody>

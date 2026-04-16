@@ -92,3 +92,10 @@ export const updateCategory = async ({
 
   return data;
 };
+
+export const deleteCategory = async (id: number) => {
+  const supabase = await createClient();
+  const { error } = await supabase.from("category").delete().match({ id });
+
+  if (error) throw new Error(`Error deleting category: ${error.message}`);
+};
