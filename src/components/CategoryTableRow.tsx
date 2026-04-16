@@ -38,10 +38,9 @@ export const CategoryTableRow = ({
 }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const handleEdit = (category: UpdateCategoryValues) => {
+  const handleEdit = () => {
     setCurrentCategory({
       name: category.name,
-      // @ts-ignore
       image: new File([], ""),
       intent: "update",
       slug: category.slug,
@@ -123,16 +122,7 @@ export const CategoryTableRow = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() =>
-                  handleEdit({
-                    ...category,
-                    intent: "update",
-                  })
-                }
-              >
-                Edit
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
                 Delete
               </DropdownMenuItem>
