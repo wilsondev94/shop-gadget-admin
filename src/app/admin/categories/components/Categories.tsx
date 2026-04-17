@@ -30,7 +30,7 @@ import {
 //   updateCategory,
 // } from "@/actions/categories";
 
-import { CategoryTableRow } from "@/components/CategoryTableRow";
+import { CategoryTableRow } from "@/app/admin/categories/components/CategoryTableRow";
 import { CreateCategoryValues, validation } from "@/lib/validations";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
