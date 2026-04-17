@@ -49,6 +49,30 @@ export const validation = {
     }),
     slug: z.string().min(1, { message: "Slug is required" }),
   }),
+
+  createOrUpdateProductSchema: z.object({
+    title: z.string().min(1, { message: "Title is required" }),
+    price: z.string().min(1, { message: "price is required" }),
+    maxQuantity: z.string().min(1, { message: "maxQuantity is required" }),
+    category: z.string().min(1, { message: "Category is required" }),
+    heroImage: z
+      .any()
+      .refine((file) => file.length === 1, "heroImage is required"),
+    images: z
+      .any()
+      .refine(
+        (files: FileList | null) =>
+          files instanceof FileList && files.length > 0,
+        { message: "At least one image is required" },
+      )
+      .transform((files: FileList | null) => (files ? Array.from(files) : [])),
+    intent: z
+      .enum(["create", "update"], {
+        message: "Intent must be either create or update",
+      })
+      .optional(),
+    slug: z.string().optional(),
+  }),
 };
 
 export type CreateAccountValues = z.infer<typeof validation.signUp>;
@@ -58,4 +82,7 @@ export type CreateCategoryValues = z.infer<
 >;
 export type UpdateCategoryValues = z.infer<
   typeof validation.updateCategorySchema
+>;
+export type CreateOrUpdateProductValues = z.infer<
+  typeof validation.createOrUpdateProductSchema
 >;

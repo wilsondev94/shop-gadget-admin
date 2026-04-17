@@ -24,3 +24,35 @@ export type CategoryWithProducts = {
 };
 
 export type CategoriesWithProductsResponse = CategoryWithProducts[];
+
+export type Category = {
+  created_at: string;
+  id: number;
+  imageUrl: string;
+  name: string;
+  slug: string;
+};
+
+export type ProductWithCategory = {
+  category: Category;
+  created_at: string;
+  heroImage: string;
+  id: number;
+  imagesUrl: string[];
+  maxQuantity: number;
+  price: number | null;
+  slug: string;
+  title: string;
+};
+
+export type ProductsWithCategoriesResponse = ProductWithCategory[];
+
+export type UpdateProductSchema = {
+  category: number;
+  heroImage: string;
+  imagesUrl: string[];
+  maxQuantity: number;
+  price: number;
+  slug: string;
+  title: string;
+};

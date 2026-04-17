@@ -31,10 +31,10 @@ export default async function AdminLayout({
   }
 
   return (
-    <>
+    <RenderMounted>
       <Header />
       <main className="min-h-[calc(100svh-128px)] py-3">{children}</main>
       <Footer />
-    </>
+    </RenderMounted>
   );
 }
