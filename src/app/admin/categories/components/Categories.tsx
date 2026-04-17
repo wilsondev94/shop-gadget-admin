@@ -64,6 +64,8 @@ const Categories = ({ categories }: categoriesProps) => {
     mode: "onChange",
   });
 
+  const watchIntent = form.watch("intent");
+
   const submitCategoryHandler: SubmitHandler<CreateCategoryValues> = async (
     data,
   ) => {
@@ -150,7 +152,9 @@ const Categories = ({ categories }: categoriesProps) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create Category</DialogTitle>
+                <DialogTitle>
+                  {watchIntent === "update" ? "Update" : "Create"} Category
+                </DialogTitle>
               </DialogHeader>
               <CategoryForm
                 form={form}
