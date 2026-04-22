@@ -73,6 +73,16 @@ export const Product = ({ categories, products }: ProductProps) => {
       intent = "create",
     } = data;
 
+    console.log({
+      category,
+      heroImage,
+      images,
+      maxQuantity,
+      price,
+      slug,
+      title,
+    });
+
     const uploadFile = async (file: File) => {
       const uniqueId = uuid();
       const fileName = `product/product-${uniqueId}-${file.name}`;
@@ -85,15 +95,12 @@ export const Product = ({ categories, products }: ProductProps) => {
     let imageUrls: string[] = [];
 
     if (heroImage) {
-      const imagePromise = Array.from(heroImage).map((file) =>
-        uploadFile(file as File),
-      );
+      // const imagePromise = Array.from(heroImage).map((file) =>
+      //   uploadFile(file as File),
+      // );
 
       try {
-        // Pick the first image from the file FieldList
-        [heroImageUrl] = await Promise.all(imagePromise); // or
-        // const urls = await Promise.all(imagePromise);
-        // heroImageUrl = urls[0];
+        heroImageUrl = await uploadFile(heroImage as File);
       } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image");
@@ -112,6 +119,8 @@ export const Product = ({ categories, products }: ProductProps) => {
         return;
       }
     }
+
+    console.log("IMAGES", heroImageUrl, imageUrls);
 
     switch (intent) {
       case "create": {
@@ -136,7 +145,7 @@ export const Product = ({ categories, products }: ProductProps) => {
         if (heroImageUrl && imageUrls.length > 0 && slug) {
           await updateProduct({
             category: Number(category),
-            heroImage: heroImageUrl!,
+            heroImage: heroImageUrl,
             imagesUrl: imageUrls,
             maxQuantity: Number(maxQuantity),
             price: Number(price),
@@ -217,6 +226,7 @@ export const Product = ({ categories, products }: ProductProps) => {
         />
 
         {/* Delete Product Modal */}
+
         <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
           <DialogContent>
             <DialogHeader>

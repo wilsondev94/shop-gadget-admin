@@ -166,7 +166,6 @@ export const ProductForm = ({
                     <Input
                       type="file"
                       accept="image/*"
-                      {...form.register("heroImage")}
                       onChange={(event) => {
                         field.onChange(event.target.files?.[0]);
                       }}
@@ -186,7 +185,6 @@ export const ProductForm = ({
                       type="file"
                       accept="image/*"
                       multiple
-                      {...form.register("images")}
                       onChange={(event) => {
                         field.onChange(event.target.files);
                       }}
