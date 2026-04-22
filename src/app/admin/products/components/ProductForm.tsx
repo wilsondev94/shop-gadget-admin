@@ -96,11 +96,11 @@ export const ProductForm = ({
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="category">Name</FieldLabel>
+                    <FieldLabel htmlFor="category">Select category</FieldLabel>
                     <Select onValueChange={field.onChange}>
                       <SelectTrigger
                         disabled={isSubmitting}
-                        className="col-span-3"
+                        className="col-span-3 !h-10"
                       >
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
@@ -124,11 +124,8 @@ export const ProductForm = ({
                 name="price"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="flex flex-col"
-                  >
-                    <FieldLabel htmlFor="Price">Name</FieldLabel>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="Price">Price</FieldLabel>
 
                     <Input
                       id="price"
@@ -146,10 +143,7 @@ export const ProductForm = ({
                 name="maxQuantity"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="flex flex-col"
-                  >
+                  <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="maxQuantity">Max Quantity</FieldLabel>
                     <Input
                       id="maxQuantity"
@@ -167,10 +161,7 @@ export const ProductForm = ({
                 name="heroImage"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="flex flex-col"
-                  >
+                  <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="heroImage">Hero Image</FieldLabel>
                     <Input
                       type="file"
@@ -189,11 +180,8 @@ export const ProductForm = ({
                 name="images"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="flex flex-col"
-                  >
-                    <FieldLabel htmlFor="images">Hero Image</FieldLabel>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="images">Product Images</FieldLabel>
                     <Input
                       type="file"
                       accept="image/*"
@@ -209,11 +197,9 @@ export const ProductForm = ({
                 )}
               />
 
-              <DialogFooter>
-                <Button disabled={isSubmitting} type="submit">
-                  Add Product
-                </Button>
-              </DialogFooter>
+              <Button disabled={isSubmitting} type="submit">
+                Add Product
+              </Button>
             </FieldGroup>
           </form>
         </div>

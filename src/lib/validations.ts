@@ -57,7 +57,7 @@ export const validation = {
     category: z.string().min(1, { message: "Category is required" }),
     heroImage: z
       .any()
-      .refine((file) => file.length === 1, "heroImage is required"),
+      .refine((file) => file?.length === 1, "heroImage is required"),
     images: z
       .any()
       .refine(

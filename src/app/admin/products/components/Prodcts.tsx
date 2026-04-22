@@ -1,7 +1,11 @@
 "use client";
 
 import { imageUploadHandler } from "@/actions/categories";
-import { createProduct } from "@/actions/products";
+import {
+  createProduct,
+  deleteProduct,
+  updateProduct,
+} from "@/actions/products";
 import {
   Table,
   TableBody,
@@ -52,6 +56,7 @@ export const Product = ({ categories, products }: ProductProps) => {
       images: [],
       intent: "create",
     },
+    mode: "onSubmit",
   });
 
   const productCreateUpdateHandler = async (
@@ -127,8 +132,37 @@ export const Product = ({ categories, products }: ProductProps) => {
         break;
       }
 
+      case "update": {
+        if (heroImageUrl && imageUrls.length > 0 && slug) {
+          await updateProduct({
+            category: Number(category),
+            heroImage: heroImageUrl!,
+            imagesUrl: imageUrls,
+            maxQuantity: Number(maxQuantity),
+            price: Number(price),
+            title,
+            slug,
+          });
+          form.reset();
+          router.refresh();
+          setIsProductModalOpen(false);
+          toast.success("Product updated successfully");
+        }
+        break;
+      }
+
       default:
         console.error("Invalid intent");
+    }
+  };
+
+  const deleteProductHandler = async () => {
+    if (currentProduct?.slug) {
+      await deleteProduct(currentProduct.slug);
+      router.refresh();
+      toast.success("Product deleted successfully");
+      setIsDeleteModalOpen(false);
+      setCurrentProduct(null);
     }
   };
 
@@ -181,6 +215,21 @@ export const Product = ({ categories, products }: ProductProps) => {
           setIsProductModalOpen={setIsProductModalOpen}
           defaultValues={currentProduct}
         />
+
+        {/* Delete Product Modal */}
+        <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Product</DialogTitle>
+            </DialogHeader>
+            <p>Are you sure you want to delete {currentProduct?.title}</p>
+            <DialogFooter>
+              <Button variant="destructive" onClick={deleteProductHandler}>
+                Delete
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </main>
   );
