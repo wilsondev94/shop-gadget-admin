@@ -1,0 +1,34 @@
+export type OrdersWithProducts =
+  | {
+      created_at: string;
+      description: string | null;
+      id: number;
+      slug: string;
+      status: string;
+      totalPrice: number;
+      user: string & {
+        avatar_url: string;
+        created_at: string | null;
+        email: string;
+        id: string;
+        type: string | null;
+      };
+      order_items: {
+        created_at: string;
+        id: number;
+        order: number;
+        product: number & {
+          category: number;
+          created_at: string;
+          heroImage: string;
+          id: number;
+          imagesUrl: string[];
+          maxQuantity: number;
+          price: number;
+          slug: string;
+          title: string;
+        };
+        quantity: number;
+      }[];
+    }[]
+  | null;
