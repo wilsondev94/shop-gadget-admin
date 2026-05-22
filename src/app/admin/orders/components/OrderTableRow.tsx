@@ -107,7 +107,6 @@ export default function OrderTableRow({ ordersWithProducts }: Props) {
                 </Select>
               </TableCell>
               <TableCell>{order.description || "No Description"}</TableCell>
-              {/* @ts-ignore */}
               <TableCell>{order.user.email}</TableCell>
               <TableCell>{order.slug}</TableCell>
               <TableCell>$ {order.totalPrice.toFixed(2)}</TableCell>
