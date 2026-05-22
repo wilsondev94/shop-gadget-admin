@@ -6,7 +6,7 @@ type User = {
   type: string | null;
 };
 
-type Product = {
+export type Product = {
   category: number;
   created_at: string;
   heroImage: string;

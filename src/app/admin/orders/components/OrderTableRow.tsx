@@ -28,34 +28,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { OrdersWithProducts } from "../types";
+import { OrdersWithProducts, Product } from "../types";
+import { updateOrderStatus } from "@/actions/orders";
 
 const statusOptions = ["Pending", "Shipped", "InTransit", "Completed"];
 
-type Props = {
+interface OrderTableRowProps {
   ordersWithProducts: OrdersWithProducts;
-};
+}
 
 type OrderedProducts = {
   order_id: number;
-  product: number & {
-    category: number;
-    created_at: string;
-    heroImage: string;
-    id: number;
-    imagesUrl: string[];
-    maxQuantity: number;
-    price: number;
-    slug: string;
-    title: string;
-  };
+  product: number & Product;
 }[];
 
-export default function OrderTableRow({ ordersWithProducts }: Props) {
+export default function OrderTableRow({
+  ordersWithProducts,
+}: OrderTableRowProps) {
   const [selectedProducts, setSelectedProducts] = useState<OrderedProducts>([]);
-
-  const openProductsModal = (products: OrderedProducts) => () =>
-    setSelectedProducts(products);
 
   const orderedProducts =
     ordersWithProducts?.flatMap((order) =>
@@ -64,6 +54,13 @@ export default function OrderTableRow({ ordersWithProducts }: Props) {
         product: item.product,
       })),
     ) || [];
+
+  const openProductsModal = (products: OrderedProducts) => () =>
+    setSelectedProducts(products);
+
+  const handleStatusChange = async (orderId: number, status: string) => {
+    await updateOrderStatus(orderId, status);
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -91,7 +88,7 @@ export default function OrderTableRow({ ordersWithProducts }: Props) {
               </TableCell>
               <TableCell>
                 <Select
-                  onValueChange={(value) => console.log(order.id, value)}
+                  onValueChange={(value) => handleStatusChange(order.id, value)}
                   defaultValue={order.status}
                 >
                   <SelectTrigger className="w-[120px]">
