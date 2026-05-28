@@ -2,7 +2,10 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { RenderMounted } from "@/components/render-mounted";
 import { createClient } from "@/supabase/server";
+import { revalidatePath } from "next/cache";
 import React from "react";
+
+revalidatePath("/", "layout");
 
 export default async function AdminLayout({
   children,
