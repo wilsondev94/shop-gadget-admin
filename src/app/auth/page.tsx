@@ -1,6 +1,6 @@
 "use client";
 
-import { authenticate } from "@/actions/authenticate";
+import { authenticate } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
