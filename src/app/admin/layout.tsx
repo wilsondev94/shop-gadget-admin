@@ -28,8 +28,6 @@ export default async function AdminLayout({
       return;
     }
 
-    console.log("USER DATA", data);
-
     // if (data.type === Role.ADMIN) return redirect("/");
   }
 

@@ -30,6 +30,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/supabase/client";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 const NAV_LINKS = [
   { href: "/admin/dashboard", label: "Dashboard" },
@@ -41,6 +42,7 @@ const NAV_LINKS = [
 export const Header = () => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
   const supabase = createClient();
@@ -74,14 +76,17 @@ export const Header = () => {
           </Link>
         ))}
       </nav>
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent
+          side="left"
+          className="data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left"
+        >
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="/"
@@ -93,6 +98,7 @@ export const Header = () => {
               <Link
                 key={href}
                 href={href}
+                onClick={() => setIsOpen(false)}
                 className={cn("hover:text-foreground text-muted-foreground", {
                   "text-foreground font-bold": pathname === href,
                 })}
